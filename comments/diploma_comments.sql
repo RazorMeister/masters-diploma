@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mp.mysql
--- Generation Time: Jun 14, 2024 at 10:15 AM
+-- Generation Time: Jun 27, 2024 at 05:35 PM
 -- Server version: 8.0.37
 -- PHP Version: 8.3.7
 
@@ -30,7 +30,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `comments` (
   `id` bigint UNSIGNED NOT NULL,
   `post_id` bigint UNSIGNED NOT NULL,
-  `content` varchar(255) NOT NULL
+  `content` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --

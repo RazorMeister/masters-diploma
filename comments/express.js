@@ -10,6 +10,10 @@ const initExpress = async () => {
   app.use(express.json());
   app.use(cors());
 
+  app.get("/", async (req, res) => {
+    return res.json({ success: true });
+  });
+
   app.get("/api/posts/:postId/comments", async (req, res) => {
     try {
       const post = await getPostById(req.params.postId);

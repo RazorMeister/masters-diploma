@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: posts-deployment
+  labels:
+    app: posts
+    version: v1.0.1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: posts
+  template:
+    metadata:
+      name: posts
+      labels:
+        app: posts
+    spec:
+      containers:
+        - name: posts
+          image: eu.gcr.io/diploma-427706/gke-posts:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts
+spec:
+  selector:
+    app: posts
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP

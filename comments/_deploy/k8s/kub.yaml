@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comments-deployment
+  labels:
+    app: comments
+    version: v1.0.1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: comments
+  template:
+    metadata:
+      name: comments
+      labels:
+        app: comments
+    spec:
+      containers:
+        - name: comments
+          image: eu.gcr.io/diploma-427706/gke-comments:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comments
+spec:
+  selector:
+    app: comments
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP

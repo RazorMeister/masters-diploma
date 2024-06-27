@@ -1,8 +1,5 @@
 FROM php:8.2-fpm
 
-ARG user
-ARG uid
-
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
@@ -31,8 +28,11 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 COPY . .
 
-# copy supervisor configuration
+RUN composer dump-autoload
+RUN php artisan optimize
+
+# Copy supervisor configuration
 COPY ./supervisord.conf /etc/supervisord.conf
 
-# run supervisor
+# Run supervisor
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]

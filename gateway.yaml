@@ -1,0 +1,55 @@
+kind: Gateway
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: external-http
+spec:
+  gatewayClassName: gke-l7-global-external-managed
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+---
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: posts-route
+spec:
+  parentRefs:
+    - kind: Gateway
+      name: external-http
+  hostnames:
+    - "gke-posts.masters-diploma.online"
+  rules:
+    - backendRefs:
+        - name: posts
+          port: 80
+---
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: comments-route
+spec:
+  parentRefs:
+    - kind: Gateway
+      name: external-http
+  hostnames:
+    - "gke-comments.masters-diploma.online"
+  rules:
+    - backendRefs:
+        - name: comments
+          port: 80
+---
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: frn-route
+spec:
+  parentRefs:
+    - kind: Gateway
+      name: external-http
+  hostnames:
+    - "gke.masters-diploma.online"
+  rules:
+    - backendRefs:
+        - name: frn
+          port: 80

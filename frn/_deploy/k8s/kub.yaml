@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frn-deployment
+  labels:
+    app: frn
+    version: v1.0.1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frn
+  template:
+    metadata:
+      name: frn
+      labels:
+        app: frn
+    spec:
+      containers:
+        - name: frn
+          image: eu.gcr.io/diploma-427706/gke-frn:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frn
+spec:
+  selector:
+    app: frn
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP

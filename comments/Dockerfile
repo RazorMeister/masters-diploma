@@ -1,21 +1,22 @@
-FROM node:16
+FROM node:lts-alpine
 
-# Create app directory
-WORKDIR /usr/src/app
+# Set workdir
+WORKDIR /app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
+# Copy both 'package.json' and 'package-lock.json'
 COPY package*.json ./
 
+# Install project dependencies
 RUN npm install
-# If you are building your code for production
-# RUN npm ci --omit=dev
 
-# Bundle app source
+# Copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
 
+# Force port to 8080
 ENV APP_PORT=8080
 
+# Expose application port
 EXPOSE 8080
+
+# Run commnets service
 CMD [ "node", "index.js" ]
